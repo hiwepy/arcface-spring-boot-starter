@@ -384,6 +384,7 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<guava.version>27.0.1-jre</guava.version>
 		<fastjson.version>1.2.57</fastjson.version>
+		<arcsoft-sdk-face.version>2.2.0.1</arcsoft-sdk-face.version>
 	</properties>
 
 	<dependencies>
@@ -461,9 +462,7 @@
 		<dependency>
 			<groupId>com.arcsoft.face</groupId>
 			<artifactId>arcsoft-sdk-face</artifactId>
-			<version>2.2.0.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/arcsoft-sdk-face-2.2.0.1.jar</systemPath>
+			<version>${arcsoft-sdk-face.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
