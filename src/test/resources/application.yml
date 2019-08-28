@@ -1,22 +1,26 @@
+# 虹软人脸识别
 arcface:
   enabled: true
   app-id: xx
-  sdk-key: xxx
+  sdk-key: xx
   detect-mode: asf-detect-mode-image
   detect-face-max-num: 1
   detect-face-orient-priority: asf-op-0-only
   detect-face-scale-val: 1
-  function-configuration:    support-age: true
+  function-configuration:
+    support-age: true
     support-face-detect: true
     support-face-recognition: true
     support-face3d-angle: true
     support-gender: true
     support-iRLiveness: true
     support-liveness: true
-  lib-path: usr\libs
-  pool2:    max-idle: 5
+  lib-path: D:\libs\WIN64
+  pool2:
+    max-idle: 5
     max-total: 10
     test-on-borrow: true
     test-on-create: true
     test-on-return: false
-    test-while-idle: false     
+    test-while-idle: false
+    jmx-enabled: false

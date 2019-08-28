@@ -15,6 +15,8 @@
  */
 package com.arcsoft.face.spring.boot.pool2;
 
+import java.util.concurrent.ConcurrentMap;
+
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -23,6 +25,7 @@ import org.springframework.util.StringUtils;
 import com.arcsoft.face.FaceEngine;
 import com.arcsoft.face.enums.ErrorInfo;
 import com.arcsoft.face.spring.boot.ArcFaceRecognitionProperties;
+import com.google.common.collect.Maps;
 
 /**
  * TODO
@@ -31,23 +34,31 @@ import com.arcsoft.face.spring.boot.ArcFaceRecognitionProperties;
 public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
 
 	private final ArcFaceRecognitionProperties properties;
-	
+	private ConcurrentMap<Integer, Integer> activeStatusMap = Maps.newConcurrentMap();
+	private ConcurrentMap<Integer, Integer> initStatusMap = Maps.newConcurrentMap();
     public FaceEngineFactory(ArcFaceRecognitionProperties properties) {
         this.properties = properties;
     }
     
 	@Override
 	public FaceEngine create() throws Exception {
+		
         FaceEngine faceEngine = StringUtils.hasText(properties.getLibPath()) ? new FaceEngine(properties.getLibPath()) : new FaceEngine() ;
-        //激活引擎
+        // 激活引擎
         int activeCode = faceEngine.activeOnline(properties.getAppId(), properties.getSdkKey());
-        System.out.println("faceEngineActiveCode:" + activeCode + "==========================");
+        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+            System.out.println("引擎激活失败");
+        }
+        int hashCode = faceEngine.hashCode();
+        // 记录初激活状态
+        activeStatusMap.put(hashCode, activeCode);
         //初始化引擎
         int initCode = faceEngine.init(properties);
         if (initCode != ErrorInfo.MOK.getValue()) {
             System.out.println("初始化引擎失败");
         }
-        System.out.println("faceEngineInitCode:" + initCode + "==========================");
+        // 记录初始化状态
+        initStatusMap.put(hashCode, initCode);
         return faceEngine;
 	}
 	
@@ -55,6 +66,49 @@ public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
     public PooledObject<FaceEngine> wrap(FaceEngine faceEngine) {
         return new DefaultPooledObject<>(faceEngine);
     }
+	
+	@Override
+	public boolean validateObject(PooledObject<FaceEngine> p) {
+		FaceEngine faceEngine = p.getObject();
+		int hashCode = faceEngine.hashCode();
+		// 获取引擎激活状态
+        int activeCode = activeStatusMap.get(hashCode);
+        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+        	return false;
+        }
+		// 获取引擎初始化状态
+        int initCode = initStatusMap.get(hashCode);
+        if (initCode != ErrorInfo.MOK.getValue()) {
+        	return false;
+        }
+		return super.validateObject(p);
+	}
+	
+	
+	@Override
+	public void activateObject(PooledObject<FaceEngine> p) throws Exception {
+		FaceEngine faceEngine = p.getObject();
+		int hashCode = faceEngine.hashCode();
+		// 获取引擎激活状态
+        int activeCode = activeStatusMap.get(hashCode);
+        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+        	// 激活引擎
+            activeCode = faceEngine.activeOnline(properties.getAppId(), properties.getSdkKey());
+            if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+                System.out.println("引擎激活失败");
+            }
+        }
+		// 获取引擎初始化状态
+        int initCode = initStatusMap.get(hashCode);
+        if (initCode != ErrorInfo.MOK.getValue()) {
+        	//初始化引擎
+            initCode = faceEngine.init(properties);
+            if (initCode != ErrorInfo.MOK.getValue()) {
+                System.out.println("初始化引擎失败");
+            }
+        }
+		super.activateObject(p);
+	}
 	
     @Override
     public void destroyObject(PooledObject<FaceEngine> p) throws Exception {

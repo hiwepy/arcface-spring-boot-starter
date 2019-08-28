@@ -20,8 +20,8 @@ public class ArcFaceRecognitionAutoConfiguration {
 	}
 
 	@Bean
-	public GenericObjectPool<FaceEngine> faceEngineObjectPool(FaceEngineFactory faceEngineFactory) {
-		return new GenericObjectPool<FaceEngine>(faceEngineFactory);
+	public GenericObjectPool<FaceEngine> faceEngineObjectPool(FaceEngineFactory faceEngineFactory, ArcFaceRecognitionProperties properties) {
+		return new GenericObjectPool<FaceEngine>(faceEngineFactory, properties.getPool2());
 	}
 
 	@Bean
