@@ -16,6 +16,7 @@
 package com.arcsoft.face.spring.boot;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
@@ -28,6 +29,7 @@ import com.arcsoft.face.FaceEngine;
 import com.arcsoft.face.FaceFeature;
 import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.FaceSimilar;
+import com.arcsoft.face.FunctionConfiguration;
 import com.arcsoft.face.GenderInfo;
 import com.arcsoft.face.IrLivenessInfo;
 import com.arcsoft.face.LivenessInfo;
@@ -141,9 +143,15 @@ public class ArcFaceRecognitionTemplate {
 				result.put("error_msg", "");
 				return result;
 			}
-			// 检测处理
+			// 人脸属性检测
+	        FunctionConfiguration configuration = FunctionConfiguration.builder()
+	        		.supportAge(properties.getFunctionConfiguration().isSupportAge())
+	        		.supportFace3dAngle(properties.getFunctionConfiguration().isSupportFace3dAngle())
+	        		//.supportFaceDetect(properties.getFunctionConfiguration().isSupportFaceDetect())
+	        		.supportGender(properties.getFunctionConfiguration().isSupportGender())
+	        		.supportLiveness(properties.getFunctionConfiguration().isSupportLiveness()).build();
 			int processCode = faceEngine.process(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(),
-					imageInfo.getImageFormat(), faceInfoList, properties.getFunctionConfiguration());
+					imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
 				result.put("error_msg", "");
@@ -203,7 +211,7 @@ public class ArcFaceRecognitionTemplate {
 				// 年龄，若为0表示检测失败
 				face.put("age", ageInfoList.get(index).getAge());
 				// RGB活体信息
-				face.put("liveness", livenessInfoList.get(index));
+				face.put("liveness", livenessInfoList.get(index).getLiveness());
 				// 人脸三维角度信息
 				face.put("angel", face3DAngleList.get(index));
 
@@ -213,13 +221,15 @@ public class ArcFaceRecognitionTemplate {
 						imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfo, faceFeature);
 				if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) == 0) {
 					// 人脸特征数据
-					face.put("feature", new String(faceFeature.getFeatureData()));
+					face.put("feature", Base64.getEncoder().encodeToString(faceFeature.getFeatureData()));
 				}
-
+				
+				face_list.add(index, face);
 			}
-
+			
 			result.put("face_list", face_list);
-
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -280,11 +290,15 @@ public class ArcFaceRecognitionTemplate {
 				return result;
 			}
 
-			// 检测处理
-			properties.getFunctionConfiguration().setSupportIRLiveness(true);
+			// 人脸属性检测
+	        FunctionConfiguration configuration = FunctionConfiguration.builder()
+	        		.supportAge(properties.getFunctionConfiguration().isSupportAge())
+	        		.supportFace3dAngle(properties.getFunctionConfiguration().isSupportFace3dAngle())
+	        		//.supportFaceDetect(properties.getFunctionConfiguration().isSupportFaceDetect())
+	        		.supportGender(properties.getFunctionConfiguration().isSupportGender())
+	        		.supportIRLiveness(properties.getFunctionConfiguration().isSupportIRLiveness()).build();
 			int processCode = faceEngine.processIr(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList,
-					properties.getFunctionConfiguration());
+					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
 				result.put("error_msg", "");
@@ -345,7 +359,7 @@ public class ArcFaceRecognitionTemplate {
 				// 年龄，若为0表示检测失败
 				face.put("age", ageInfoList.get(index).getAge());
 				// RGB活体信息
-				face.put("liveness", livenessInfoList.get(index));
+				face.put("liveness", livenessInfoList.get(index).getLiveness());
 				// 人脸三维角度信息
 				face.put("angel", face3DAngleList.get(index));
 
@@ -355,13 +369,16 @@ public class ArcFaceRecognitionTemplate {
 						imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfo, faceFeature);
 				if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) == 0) {
 					// 人脸特征数据
-					face.put("feature", new String(faceFeature.getFeatureData()));
+					face.put("feature", Base64.getEncoder().encodeToString(faceFeature.getFeatureData()));
 				}
-
+				
+				face_list.add(index, face);
+				
 			}
 
 			result.put("face_list", face_list);
-
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,11 +393,7 @@ public class ArcFaceRecognitionTemplate {
 		return null;
 	}
 
-	public JSONObject match(byte[] imageBytes, byte[] feature, FaceLiveness liveness) {
-		return match(ImageFactory.getRGBData(imageBytes), feature, liveness);
-	}
-
-	public JSONObject match(ImageInfo imageInfo, byte[] feature, FaceLiveness liveness) {
+	public JSONObject match(ImageInfo sourceImage, byte[] feature, FaceLiveness liveness) {
 
 		JSONObject result = new JSONObject();
 		FaceEngine faceEngine = null;
@@ -399,8 +412,8 @@ public class ArcFaceRecognitionTemplate {
 			// 人脸检测得到人脸列表
 			List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
 			// 人脸检测
-			int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
+			int detectCode = faceEngine.detectFaces(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
 				result.put("error_msg", "");
@@ -408,9 +421,9 @@ public class ArcFaceRecognitionTemplate {
 			}
 
 			// 特征提取
-			FaceFeature faceFeature = new FaceFeature();
-			int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList.get(0), faceFeature);
+			FaceFeature sourceFaceFeature = new FaceFeature();
+			int extractCode = faceEngine.extractFaceFeature(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode);
 				result.put("error_msg", "");
@@ -419,11 +432,8 @@ public class ArcFaceRecognitionTemplate {
 
 			// 特征比对
 			FaceFeature targetFaceFeature = new FaceFeature();
-			targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
-
-			FaceFeature sourceFaceFeature = new FaceFeature();
-			sourceFaceFeature.setFeatureData(feature);
-
+			targetFaceFeature.setFeatureData(feature);
+			
 			FaceSimilar faceSimilar = new FaceSimilar();
 
 			int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
@@ -435,12 +445,18 @@ public class ArcFaceRecognitionTemplate {
 
 			// 特征相似值
 			result.put("score", faceSimilar.getScore());
-
-			for (FaceInfo faceInfo : faceInfoList) {
+			JSONArray face_list = new JSONArray(faceInfoList.size());
+			for (int index = 0; index < faceInfoList.size(); index++) {
+				FaceInfo faceInfo = faceInfoList.get(index);
 				JSONObject face = new JSONObject();
 				// 人脸图片的唯一标识，IMAGE模式下不返回faceId
 				face.put("face_token", faceInfo.getFaceId());
+				
+				face_list.add(index, face);
 			}
+			result.put("face_list", face_list);
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -453,12 +469,12 @@ public class ArcFaceRecognitionTemplate {
 			}
 		}
 	}
-
-	public JSONObject irMatch(byte[] imageBytes, byte[] feature, FaceLiveness liveness) {
-		return irMatch(ImageFactory.getGrayData(imageBytes), feature, liveness);
+	
+	public JSONObject match(byte[] sourceImage, byte[] targetImage, FaceLiveness liveness) {
+		return match(ImageFactory.getRGBData(sourceImage), ImageFactory.getRGBData(targetImage), liveness);
 	}
-
-	public JSONObject irMatch(ImageInfo imageInfo, byte[] feature, FaceLiveness liveness) {
+	
+	public JSONObject match(ImageInfo sourceImage, ImageInfo targetImage, FaceLiveness liveness) {
 
 		JSONObject result = new JSONObject();
 		FaceEngine faceEngine = null;
@@ -474,33 +490,44 @@ public class ArcFaceRecognitionTemplate {
 				result.put("error_msg", "");
 			}
 
-			// 人脸检测得到人脸列表
-			List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
 			// 人脸检测
-			int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
+			List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
+			int detectCode = faceEngine.detectFaces(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
 				result.put("error_msg", "");
 				return result;
 			}
-
-			// 特征提取
-			FaceFeature faceFeature = new FaceFeature();
-			int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList.get(0), faceFeature);
+			
+			// 人脸检测
+			List<FaceInfo> faceInfoList2 = new ArrayList<FaceInfo>();
+			int detectCode2 = faceEngine.detectFaces(targetImage.getImageData(), targetImage.getWidth(),
+					targetImage.getHeight(), targetImage.getImageFormat(), faceInfoList2);
+			if (ErrorInfo.getValidEnum(detectCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
+				result.put("error_code", detectCode2);
+				result.put("error_msg", "");
+				return result;
+			}
+			
+			// 源图片特征提取
+			FaceFeature sourceFaceFeature = new FaceFeature();
+			int extractCode = faceEngine.extractFaceFeature(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode);
 				result.put("error_msg", "");
 				return result;
 			}
-
-			// 特征比对
+			// 目标图片特征提取
 			FaceFeature targetFaceFeature = new FaceFeature();
-			targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
-
-			FaceFeature sourceFaceFeature = new FaceFeature();
-			sourceFaceFeature.setFeatureData(feature);
+			int extractCode2 = faceEngine.extractFaceFeature(targetImage.getImageData(), targetImage.getWidth(),
+					targetImage.getHeight(), targetImage.getImageFormat(), faceInfoList2.get(0), targetFaceFeature);
+			if (ErrorInfo.getValidEnum(extractCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
+				result.put("error_code", extractCode2);
+				result.put("error_msg", "");
+				return result;
+			}
 
 			FaceSimilar faceSimilar = new FaceSimilar();
 
@@ -513,12 +540,18 @@ public class ArcFaceRecognitionTemplate {
 
 			// 特征相似值
 			result.put("score", faceSimilar.getScore());
-
-			for (FaceInfo faceInfo : faceInfoList) {
+			JSONArray face_list = new JSONArray(faceInfoList.size());
+			for (int index = 0; index < faceInfoList.size(); index++) {
+				FaceInfo faceInfo = faceInfoList.get(index);
 				JSONObject face = new JSONObject();
 				// 人脸图片的唯一标识，IMAGE模式下不返回faceId
 				face.put("face_token", faceInfo.getFaceId());
+				
+				face_list.add(index, face);
 			}
+			result.put("face_list", face_list);
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -564,9 +597,11 @@ public class ArcFaceRecognitionTemplate {
 			}
 
 			// 活体检测
-			properties.getFunctionConfiguration().setSupportIRLiveness(true);
+	        FunctionConfiguration configuration = FunctionConfiguration.builder()
+	        		//.supportFaceDetect(properties.getFunctionConfiguration().isSupportFaceDetect())
+	        		.supportLiveness(properties.getFunctionConfiguration().isSupportLiveness()).build();
 			int processCode = faceEngine.process(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(),
-					imageInfo.getImageFormat(), faceInfoList, properties.getFunctionConfiguration());
+					imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
 				result.put("error_msg", "");
@@ -583,14 +618,18 @@ public class ArcFaceRecognitionTemplate {
 			}
 
 			// 人脸识别结果数据
+			JSONArray face_list = new JSONArray(faceInfoList.size());
 			for (int index = 0; index < faceInfoList.size(); index++) {
 				FaceInfo faceInfo = faceInfoList.get(index);
 				JSONObject face = new JSONObject();
 				// 人脸图片的唯一标识，IMAGE模式下不返回faceId
 				face.put("face_token", faceInfo.getFaceId());
 				face.put("liveness", livenessList.get(index).getLiveness());
+				face_list.add(index, face);
 			}
-
+			result.put("face_list", face_list);
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -643,11 +682,12 @@ public class ArcFaceRecognitionTemplate {
 				return result;
 			}
 
-			// IR活体检测
-			properties.getFunctionConfiguration().setSupportIRLiveness(true);
+			// 人脸属性检测
+	        FunctionConfiguration configuration = FunctionConfiguration.builder()
+	        		//.supportFaceDetect(properties.getFunctionConfiguration().isSupportFaceDetect())
+	        		.supportIRLiveness(properties.getFunctionConfiguration().isSupportIRLiveness()).build();
 			int processCode = faceEngine.processIr(imageInfo.getImageData(), imageInfo.getWidth(),
-					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList,
-					properties.getFunctionConfiguration());
+					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
 				result.put("error_msg", "");
@@ -664,14 +704,18 @@ public class ArcFaceRecognitionTemplate {
 			}
 
 			// 人脸识别结果数据
+			JSONArray face_list = new JSONArray(faceInfoList.size());
 			for (int index = 0; index < faceInfoList.size(); index++) {
 				FaceInfo faceInfo = faceInfoList.get(index);
 				JSONObject face = new JSONObject();
 				// 人脸图片的唯一标识，IMAGE模式下不返回faceId
 				face.put("face_token", faceInfo.getFaceId());
 				face.put("liveness", irLivenessList.get(index).getLiveness());
+				face_list.add(index, face);
 			}
-
+			result.put("face_list", face_list);
+			result.put("error_code", 0);
+			
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

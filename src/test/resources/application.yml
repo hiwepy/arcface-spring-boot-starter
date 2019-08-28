@@ -6,7 +6,7 @@ arcface:
   detect-mode: asf-detect-mode-image
   detect-face-max-num: 1
   detect-face-orient-priority: asf-op-0-only
-  detect-face-scale-val: 1
+  detect-face-scale-val: 30
   function-configuration:
     support-age: true
     support-face-detect: true

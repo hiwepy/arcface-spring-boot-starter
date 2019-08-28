@@ -68,24 +68,6 @@ public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
     }
 	
 	@Override
-	public boolean validateObject(PooledObject<FaceEngine> p) {
-		FaceEngine faceEngine = p.getObject();
-		int hashCode = faceEngine.hashCode();
-		// 获取引擎激活状态
-        int activeCode = activeStatusMap.get(hashCode);
-        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-        	return false;
-        }
-		// 获取引擎初始化状态
-        int initCode = initStatusMap.get(hashCode);
-        if (initCode != ErrorInfo.MOK.getValue()) {
-        	return false;
-        }
-		return super.validateObject(p);
-	}
-	
-	
-	@Override
 	public void activateObject(PooledObject<FaceEngine> p) throws Exception {
 		FaceEngine faceEngine = p.getObject();
 		int hashCode = faceEngine.hashCode();
