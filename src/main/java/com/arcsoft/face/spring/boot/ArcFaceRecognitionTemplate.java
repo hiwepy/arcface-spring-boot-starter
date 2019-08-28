@@ -684,5 +684,9 @@ public class ArcFaceRecognitionTemplate {
 			}
 		}
 	}
+	
+	public ArcFaceRecognitionProperties getProperties() {
+		return properties;
+	}
 
 }
