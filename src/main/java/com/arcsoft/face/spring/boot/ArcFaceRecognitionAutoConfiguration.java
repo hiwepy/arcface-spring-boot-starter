@@ -25,7 +25,7 @@ public class ArcFaceRecognitionAutoConfiguration {
 	}
 
 	@Bean
-	public ArcFaceRecognitionTemplate faceRecognitionV3Template(ArcFaceRecognitionProperties properties,
+	public ArcFaceRecognitionTemplate arcFaceRecognitionTemplate(ArcFaceRecognitionProperties properties,
 			GenericObjectPool<FaceEngine> faceEngineObjectPool) {
 		return new ArcFaceRecognitionTemplate(properties, faceEngineObjectPool);
 	}
