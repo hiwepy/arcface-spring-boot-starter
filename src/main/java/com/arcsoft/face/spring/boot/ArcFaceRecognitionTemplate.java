@@ -564,6 +564,107 @@ public class ArcFaceRecognitionTemplate {
 			}
 		}
 	}
+	
+	public JSONObject irSearch(byte[] sourceImage, byte[] searchImage) {
+		return search(ImageFactory.getGrayData(sourceImage), ImageFactory.getGrayData(searchImage));
+	}
+	
+	public JSONObject search(byte[] sourceImage, byte[] searchImage) {
+		return search(ImageFactory.getRGBData(sourceImage), ImageFactory.getRGBData(searchImage));
+	}
+	
+	public JSONObject search(ImageInfo sourceImage, ImageInfo searchImage) {
+
+		JSONObject result = new JSONObject();
+		FaceEngine faceEngine = null;
+		try {
+
+			// 获取引擎对象
+			faceEngine = faceEngineObjectPool.borrowObject();
+
+			// 人脸检测
+			List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
+			int detectCode = faceEngine.detectFaces(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
+			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
+				result.put("error_code", detectCode);
+				result.put("error_msg", "");
+				return result;
+			}
+			
+			// 人脸检测
+			List<FaceInfo> searchFaceInfoList = new ArrayList<FaceInfo>();
+			int detectCode2 = faceEngine.detectFaces(searchImage.getImageData(), searchImage.getWidth(),
+					searchImage.getHeight(), searchImage.getImageFormat(), searchFaceInfoList);
+			if (ErrorInfo.getValidEnum(detectCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
+				result.put("error_code", detectCode2);
+				result.put("error_msg", "");
+				return result;
+			}
+			
+			// 源图片特征提取
+			FaceFeature sourceFaceFeature = new FaceFeature();
+			int extractCode = faceEngine.extractFaceFeature(sourceImage.getImageData(), sourceImage.getWidth(),
+					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
+			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
+				result.put("error_code", extractCode);
+				result.put("error_msg", "");
+				return result;
+			}
+			
+			/**
+			 * 从待检测图片中查找出指定特征的人脸
+			 */
+
+			JSONArray face_list = new JSONArray(faceInfoList.size());
+			for (int index = 0; index < searchFaceInfoList.size(); index++) {
+				
+				FaceInfo faceInfo = searchFaceInfoList.get(index);
+				
+				// 待检索图片特征提取
+				FaceFeature targetFaceFeature = new FaceFeature();
+				int extractCode2 = faceEngine.extractFaceFeature(searchImage.getImageData(), searchImage.getWidth(),
+						searchImage.getHeight(), searchImage.getImageFormat(), faceInfo, targetFaceFeature);
+				if (ErrorInfo.getValidEnum(extractCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
+					result.put("error_code", extractCode2);
+					result.put("error_msg", "");
+					return result;
+				}
+				
+				FaceSimilar faceSimilar = new FaceSimilar();
+
+				int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
+				if (ErrorInfo.getValidEnum(compareCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
+					result.put("error_code", compareCode);
+					result.put("error_msg", "");
+					return result;
+				}
+				
+				JSONObject face = new JSONObject();
+				// 人脸图片的唯一标识，IMAGE模式下不返回faceId
+				face.put("face_token", faceInfo.getFaceId());
+				// 特征相似值
+				face.put("score", faceSimilar.getScore());
+				
+				face_list.add(index, face);
+				
+			}
+			
+			result.put("face_list", face_list);
+			result.put("error_code", 0);
+			
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("error_code", 500);
+			result.put("error_msg", "");
+			return result;
+		} finally {
+			if (faceEngine != null) {
+				faceEngineObjectPool.returnObject(faceEngine);
+			}
+		}
+	}
 
 	public JSONObject verify(byte[] imageBytes, FaceLiveness liveness) {
 		return verify(ImageFactory.getRGBData(imageBytes), liveness);
