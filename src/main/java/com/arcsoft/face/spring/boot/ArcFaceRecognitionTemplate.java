@@ -20,6 +20,8 @@ import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.util.CollectionUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -44,13 +46,18 @@ import com.google.common.collect.Lists;
  */
 public class ArcFaceRecognitionTemplate {
 
+	protected MessageSourceAccessor messages = ArcFaceMessageSource.getAccessor();
 	private ArcFaceRecognitionProperties properties;
 	private GenericObjectPool<FaceEngine> faceEngineObjectPool;
-
+	
 	public ArcFaceRecognitionTemplate(ArcFaceRecognitionProperties properties,
 			GenericObjectPool<FaceEngine> faceEngineObjectPool) {
 		this.properties = properties;
 		this.faceEngineObjectPool = faceEngineObjectPool;
+	}
+	
+	protected String getMessage(int code) {
+		return messages.getMessage("K" + code);
 	}
 	
 	/**
@@ -130,9 +137,9 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
-
+			
 			// 人脸检测得到人脸列表
 			List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
 			// 人脸检测
@@ -140,9 +147,17 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
 				return result;
 			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
+				return result;
+			}
+			
 			// 人脸属性检测
 	        FunctionConfiguration configuration = FunctionConfiguration.builder()
 	        		.supportAge(properties.getFunctionConfiguration().isSupportAge())
@@ -154,7 +169,7 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(processCode));
 				return result;
 			}
 			List<LivenessInfo> livenessInfoList = Lists.newLinkedList();
@@ -165,29 +180,29 @@ public class ArcFaceRecognitionTemplate {
 			// RGB活体检测
 			int livenessCode = faceEngine.getLiveness(livenessInfoList);
 			if (ErrorInfo.getValidEnum(livenessCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", livenessCode);
+				result.put("error_msg", this.getMessage(livenessCode));
 				return result;
 			}
 			// 年龄检测
 			int ageCode = faceEngine.getAge(ageInfoList);
 			if (ErrorInfo.getValidEnum(ageCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", ageCode);
+				result.put("error_msg", this.getMessage(ageCode));
 				return result;
 			}
 			// 性别检测
 			int genderCode = faceEngine.getGender(genderInfoList);
 			if (ErrorInfo.getValidEnum(genderCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", genderCode);
+				result.put("error_msg", this.getMessage(genderCode));
 				return result;
 			}
 			// 三维角度检测
 			int angleCode = faceEngine.getFace3DAngle(face3DAngleList);
 			if (ErrorInfo.getValidEnum(angleCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", angleCode);
+				result.put("error_msg", this.getMessage(angleCode));
 				return result;
 			}
 
@@ -276,7 +291,7 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
 
 			// 人脸检测得到人脸列表
@@ -286,7 +301,14 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
+				return result;
+			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
 				return result;
 			}
 
@@ -301,7 +323,7 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(processCode));
 				return result;
 			}
 
@@ -313,29 +335,29 @@ public class ArcFaceRecognitionTemplate {
 			// IR活体检测
 			int livenessCode = faceEngine.getLivenessIr(livenessInfoList);
 			if (ErrorInfo.getValidEnum(livenessCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", livenessCode);
+				result.put("error_msg", this.getMessage(livenessCode));
 				return result;
 			}
 			// 年龄检测
 			int ageCode = faceEngine.getAge(ageInfoList);
 			if (ErrorInfo.getValidEnum(ageCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", ageCode);
+				result.put("error_msg", this.getMessage(ageCode));
 				return result;
 			}
 			// 性别检测
 			int genderCode = faceEngine.getGender(genderInfoList);
 			if (ErrorInfo.getValidEnum(genderCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", genderCode);
+				result.put("error_msg", this.getMessage(genderCode));
 				return result;
 			}
 			// 三维角度检测
 			int angleCode = faceEngine.getFace3DAngle(face3DAngleList);
 			if (ErrorInfo.getValidEnum(angleCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
-				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_code", angleCode);
+				result.put("error_msg", this.getMessage(angleCode));
 				return result;
 			}
 			
@@ -406,7 +428,7 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
 
 			// 人脸检测得到人脸列表
@@ -416,17 +438,23 @@ public class ArcFaceRecognitionTemplate {
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
 				return result;
 			}
-
+			
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
+				return result;
+			}
+			
 			// 特征提取
 			FaceFeature sourceFaceFeature = new FaceFeature();
 			int extractCode = faceEngine.extractFaceFeature(sourceImage.getImageData(), sourceImage.getWidth(),
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(extractCode));
 				return result;
 			}
 
@@ -439,7 +467,7 @@ public class ArcFaceRecognitionTemplate {
 			int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
 			if (ErrorInfo.getValidEnum(compareCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", compareCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(compareCode));
 				return result;
 			}
 
@@ -487,7 +515,7 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
 
 			// 人脸检测
@@ -496,7 +524,14 @@ public class ArcFaceRecognitionTemplate {
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
+				return result;
+			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
 				return result;
 			}
 			
@@ -506,7 +541,14 @@ public class ArcFaceRecognitionTemplate {
 					targetImage.getHeight(), targetImage.getImageFormat(), faceInfoList2);
 			if (ErrorInfo.getValidEnum(detectCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode2);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode2));
+				return result;
+			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList2)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
 				return result;
 			}
 			
@@ -516,7 +558,7 @@ public class ArcFaceRecognitionTemplate {
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode);
-				result.put("error_msg", "");
+				result.put("error_msg",  this.getMessage(extractCode));
 				return result;
 			}
 			// 目标图片特征提取
@@ -525,7 +567,7 @@ public class ArcFaceRecognitionTemplate {
 					targetImage.getHeight(), targetImage.getImageFormat(), faceInfoList2.get(0), targetFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode2);
-				result.put("error_msg", "");
+				result.put("error_msg",  this.getMessage(extractCode2));
 				return result;
 			}
 
@@ -534,7 +576,7 @@ public class ArcFaceRecognitionTemplate {
 			int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
 			if (ErrorInfo.getValidEnum(compareCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", compareCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(compareCode));
 				return result;
 			}
 
@@ -588,7 +630,7 @@ public class ArcFaceRecognitionTemplate {
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
 				return result;
 			}
 			
@@ -598,7 +640,7 @@ public class ArcFaceRecognitionTemplate {
 					searchImage.getHeight(), searchImage.getImageFormat(), searchFaceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode2);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode2));
 				return result;
 			}
 			
@@ -608,7 +650,7 @@ public class ArcFaceRecognitionTemplate {
 					sourceImage.getHeight(), sourceImage.getImageFormat(), faceInfoList.get(0), sourceFaceFeature);
 			if (ErrorInfo.getValidEnum(extractCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", extractCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(extractCode));
 				return result;
 			}
 			
@@ -627,7 +669,7 @@ public class ArcFaceRecognitionTemplate {
 						searchImage.getHeight(), searchImage.getImageFormat(), faceInfo, targetFaceFeature);
 				if (ErrorInfo.getValidEnum(extractCode2).compareTo(ErrorInfo.MERR_NONE) != 0) {
 					result.put("error_code", extractCode2);
-					result.put("error_msg", "");
+					result.put("error_msg", this.getMessage(extractCode2));
 					return result;
 				}
 				
@@ -636,7 +678,7 @@ public class ArcFaceRecognitionTemplate {
 				int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
 				if (ErrorInfo.getValidEnum(compareCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 					result.put("error_code", compareCode);
-					result.put("error_msg", "");
+					result.put("error_msg", this.getMessage(compareCode));
 					return result;
 				}
 				
@@ -657,7 +699,7 @@ public class ArcFaceRecognitionTemplate {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("error_code", 500);
-			result.put("error_msg", "");
+			result.put("error_msg", "服务端异常");
 			return result;
 		} finally {
 			if (faceEngine != null) {
@@ -683,7 +725,7 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
 
 			// 人脸检测得到人脸列表
@@ -693,7 +735,14 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
+				return result;
+			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
 				return result;
 			}
 
@@ -705,7 +754,7 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(processCode));
 				return result;
 			}
 
@@ -714,7 +763,7 @@ public class ArcFaceRecognitionTemplate {
 			int livenessCode = faceEngine.getLiveness(livenessList);
 			if (ErrorInfo.getValidEnum(livenessCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", livenessCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(livenessCode));
 				return result;
 			}
 
@@ -769,7 +818,7 @@ public class ArcFaceRecognitionTemplate {
 			int paramCode = this.setLivenessParam(faceEngine, liveness, result);
 			if (ErrorInfo.getValidEnum(paramCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", paramCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(paramCode));
 			}
 
 			// 人脸检测得到人脸列表
@@ -779,7 +828,14 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
 			if (ErrorInfo.getValidEnum(detectCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", detectCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(detectCode));
+				return result;
+			}
+			
+			// 没有检测到人脸
+			if(CollectionUtils.isEmpty(faceInfoList)) {
+				result.put("error_code", ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue());
+				result.put("error_msg", this.getMessage(ErrorInfo.MERR_ASF_EX_INVALID_FACE_INFO.getValue()));
 				return result;
 			}
 
@@ -791,7 +847,7 @@ public class ArcFaceRecognitionTemplate {
 					imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList, configuration);
 			if (ErrorInfo.getValidEnum(processCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", processCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(processCode));
 				return result;
 			}
 
@@ -800,7 +856,7 @@ public class ArcFaceRecognitionTemplate {
 			int livenessIrCode = faceEngine.getLivenessIr(irLivenessList);
 			if (ErrorInfo.getValidEnum(livenessIrCode).compareTo(ErrorInfo.MERR_NONE) != 0) {
 				result.put("error_code", livenessIrCode);
-				result.put("error_msg", "");
+				result.put("error_msg", this.getMessage(livenessIrCode));
 				return result;
 			}
 
