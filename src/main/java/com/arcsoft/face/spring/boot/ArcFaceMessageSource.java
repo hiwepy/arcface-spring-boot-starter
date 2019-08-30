@@ -28,7 +28,7 @@ public class ArcFaceMessageSource extends ResourceBundleMessageSource {
 	// ===================================================================================================
 
 	public ArcFaceMessageSource() {
-		setBasename("org.springframework.security.boot.messages");
+		setBasename("com.arcsoft.face.spring.boot.messages");
 	}
 
 	// ~ Methods
