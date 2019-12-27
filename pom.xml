@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
 	<description>Spring Boot Starter For Arcsoft API</description>
 	<version>1.0.0-SNAPSHOT</version>
@@ -34,7 +34,7 @@
 
 	<developers>
 		<developer>
-			<name>vindell</name>
+			<name>wandl</name>
 			<email>hnxyhcwdl1003@163.com</email>
 			<roles>
 				<role>developer</role>
