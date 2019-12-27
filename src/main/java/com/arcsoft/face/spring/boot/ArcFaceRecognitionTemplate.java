@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, vindell (https://github.com/vindell).
+ * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 
 /**
  * 基于虹软Arcface实现的人脸识别通用模板对象
- * @author ： <a href="https://github.com/vindell">wandl</a>
+ * @author ： <a href="https://github.com/hiwepy">wandl</a>
  */
 public class ArcFaceRecognitionTemplate {
 
@@ -87,7 +87,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject detect(byte[] imageBytes) {
@@ -98,7 +98,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject detect(byte[] imageBytes, FaceLiveness liveness) {
@@ -109,7 +109,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject detect(ImageInfo imageInfo) {
@@ -120,7 +120,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject detect(ImageInfo imageInfo, FaceLiveness liveness) {
@@ -263,7 +263,7 @@ public class ArcFaceRecognitionTemplate {
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject irDetect(byte[] imageBytes, FaceLiveness liveness) {
@@ -274,7 +274,7 @@ public class ArcFaceRecognitionTemplate {
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @return
 	 */
 	public JSONObject irDetect(ImageInfo imageInfo, FaceLiveness liveness) {
@@ -800,7 +800,7 @@ public class ArcFaceRecognitionTemplate {
 	/**
 	 * IR活体检测
 	 * 
-	 * @author ： <a href="https://github.com/vindell">wandl</a>
+	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
 	 * @param imageInfo 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断
 	 * @param option    场景信息，程序会视不同的场景选用相对应的模型。当前支持的场景有COMMON(通用场景)，GATE(闸机场景)，默认使用COMMON
 	 * @return
