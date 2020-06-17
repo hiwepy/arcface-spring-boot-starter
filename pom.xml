@@ -384,7 +384,7 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<guava.version>28.1-jre</guava.version>
 		<fastjson.version>1.2.62</fastjson.version>
-		<arcsoft-sdk-face.version>3.0.0.0</arcsoft-sdk-face.version>
+		<arcsoft-sdk-face.version>2.2.0.1</arcsoft-sdk-face.version>
 	</properties>
 
 	<dependencies>
