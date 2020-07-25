@@ -40,7 +40,7 @@ import com.arcsoft.face.toolkit.ImageFactory;
 import com.arcsoft.face.toolkit.ImageInfo;
 import com.google.common.collect.Lists;
 
-/**
+/*
  * 基于虹软Arcface实现的人脸识别通用模板对象
  * @author ： <a href="https://github.com/hiwepy">wandl</a>
  */
@@ -60,7 +60,7 @@ public class ArcFaceRecognitionTemplate {
 		return messages.getMessage("K" + code);
 	}
 	
-	/**
+	/*
 	 * 不同的控制度下所对应的活体控制阈值，如果检测出来的活体分数小于控制阈值，则会返回错误信息。 LOW 0.05 NORMAL 0.3 HIGH 0.9
 	 */
 	protected int setLivenessParam(FaceEngine faceEngine, FaceLiveness liveness, JSONObject result) {
@@ -83,7 +83,7 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 
-	/**
+	/*
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
@@ -94,7 +94,7 @@ public class ArcFaceRecognitionTemplate {
 		return detect(ImageFactory.getRGBData(imageBytes), FaceLiveness.NONE);
 	}
 
-	/**
+	/*
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
@@ -105,7 +105,7 @@ public class ArcFaceRecognitionTemplate {
 		return detect(ImageFactory.getRGBData(imageBytes), liveness);
 	}
 
-	/**
+	/*
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
@@ -116,7 +116,7 @@ public class ArcFaceRecognitionTemplate {
 		return detect(imageInfo, FaceLiveness.NONE);
 	}
 
-	/**
+	/*
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
@@ -259,7 +259,7 @@ public class ArcFaceRecognitionTemplate {
 		return null;
 	}
 
-	/**
+	/*
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
@@ -270,7 +270,7 @@ public class ArcFaceRecognitionTemplate {
 		return irDetect(ImageFactory.getGrayData(imageBytes), liveness);
 	}
 
-	/**
+	/*
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
@@ -654,7 +654,7 @@ public class ArcFaceRecognitionTemplate {
 				return result;
 			}
 			
-			/**
+			/*
 			 * 从待检测图片中查找出指定特征的人脸
 			 */
 
@@ -797,7 +797,7 @@ public class ArcFaceRecognitionTemplate {
 		return irVerify(ImageFactory.getGrayData(imageBytes), liveness);
 	}
 
-	/**
+	/*
 	 * IR活体检测
 	 * 
 	 * @author ： <a href="https://github.com/hiwepy">wandl</a>
