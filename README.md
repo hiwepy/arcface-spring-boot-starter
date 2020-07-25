@@ -14,7 +14,7 @@
 <dependency>
 	<groupId>${project.groupId}</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.1.RELEASE</version>
 </dependency>
 ```
 
