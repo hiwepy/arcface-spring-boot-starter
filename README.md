@@ -1,6 +1,5 @@
 # arcface-spring-boot-starter
 
-
 #### 组件简介
 
 > 基于 [虹软 - 视觉开放平台](https://ai.arcsoft.com.cn/index.html) 人脸识别SDK实现的人脸识别整合
@@ -8,11 +7,17 @@
 
 #### 使用说明
 
-##### 1、Spring Boot 项目添加 Maven 依赖
+##### 1、发布SDK到自己的 Maven私服（`请下载新版本`）
+
+```shell
+mvn deploy:deploy-file -DgroupId=com.baidu.aip -DartifactId=java-sdk -Dversion=4.11.1 -Dpackaging=jar -Dfile=D:\aip-java-sdk-4.11.1.jar -Durl=http://127.0.0.1:8082/nexus/content/repositories/releases/ -DrepositoryId=nexus-releases
+```
+
+##### 2、Spring Boot 项目添加 Maven 依赖
 
 ``` xml
 <dependency>
-	<groupId>${project.groupId}</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
@@ -186,7 +191,6 @@ public class FaceEngineTest {
         int livenessCode = faceEngine.getLiveness(livenessInfoList);
         System.out.println("活体：" + livenessInfoList.get(0).getLiveness());
 
-
         //IR属性处理
         ImageInfo imageInfoGray = getGrayData(new File("f:\\timg.jpg"));
         List<FaceInfo> faceInfoListGray = new ArrayList<FaceInfo>();
@@ -201,10 +205,8 @@ public class FaceEngineTest {
         int livenessIr = faceEngine.getLivenessIr(irLivenessInfo);
         System.out.println("IR活体：" + irLivenessInfo.get(0).getLiveness());
 
-
         //设置活体检测参数
         int paramCode = faceEngine.setLivenessParam(0.8f, 0.8f);
-
 
         //获取激活文件信息
         ActiveFileInfo activeFileInfo = new ActiveFileInfo();
@@ -213,7 +215,13 @@ public class FaceEngineTest {
         //引擎卸载
         int unInitCode = faceEngine.unInit();
     }
-
-
 }
 ```
+
+## Jeebiz 技术社区
+
+Jeebiz 技术社区 **微信公共号**、**小程序**，欢迎关注反馈意见和一起交流，关注公众号回复「Jeebiz」拉你入群。
+
+|公共号|小程序|
+|---|---|
+| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/qrcode_for_gh_1d965ea2dfd1_344.jpg)| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/gh_09d7d00da63e_344.jpg)|
