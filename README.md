@@ -4,7 +4,6 @@
 
 > 基于 [虹软 - 视觉开放平台](https://ai.arcsoft.com.cn/index.html) 人脸识别SDK实现的人脸识别整合
 
-
 #### 使用说明
 
 ##### 1、发布SDK到自己的 Maven私服（`请下载新版本`）
