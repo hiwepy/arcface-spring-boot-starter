@@ -33,9 +33,9 @@ arcface:
   enabled: true
   app-id: xx
   sdk-key: xxx
-  detect-mode: asf-detect-mode-image
+  detect-mode: asf_detect_mode_image
   detect-face-max-num: 1
-  detect-face-orient-priority: asf-op-0-only
+  detect-face-orient-priority: asf_op_0_only
   detect-face-scale-val: 1
   function-configuration:
     support-age: true
