@@ -1,0 +1,155 @@
+[arcface-spring-boot-starter/2.3.x] 失败 - 分支切换失败
+[arcface-spring-boot-starter/2.7.x] 失败 - 分支切换失败
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+Downloading from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.pom
+Downloading from mirror: https://maven.aliyun.com/nexus/content/groups/public/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.pom
+Downloading from maven-releases: https://packages.aliyun.com/5fdc0afd99b59ba3c5ead757/maven/maven-releases/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.pom
+Downloading from maven-snapshots: https://packages.aliyun.com/5fdc0afd99b59ba3c5ead757/maven/maven-snapshots/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.pom
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+Downloading from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/org/apache/commons/commons-pool2/2.12.1/commons-pool2-2.12.1.pom
+Downloaded from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/org/apache/commons/commons-pool2/2.12.1/commons-pool2-2.12.1.pom (0 B at 0 B/s)
+Downloading from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.jar
+Downloading from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/org/apache/commons/commons-pool2/2.12.1/commons-pool2-2.12.1.jar
+Downloaded from aiban-tianyin-core: https://aiban-maven.pkg.coding.net/repository/tianyin/core/org/apache/commons/commons-pool2/2.12.1/commons-pool2-2.12.1.jar (0 B at 0 B/s)
+Downloading from mirror: https://maven.aliyun.com/nexus/content/groups/public/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.jar
+Downloading from maven-releases: https://packages.aliyun.com/5fdc0afd99b59ba3c5ead757/maven/maven-releases/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.jar
+Downloading from maven-snapshots: https://packages.aliyun.com/5fdc0afd99b59ba3c5ead757/maven/maven-snapshots/com/arcsoft/face/arcsoft-sdk-face/3.0.0.0/arcsoft-sdk-face-3.0.0.0.jar
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  18.674 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:05+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Could not find artifact com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in aiban-tianyin-core (https://aiban-maven.pkg.coding.net/repository/tianyin/core/)[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.0.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.251 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:06+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.1.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.183 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:07+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.2.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.186 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:07+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.3.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.186 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:08+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.4.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.184 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:08+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/3.5.x] 失败 - 查看日志
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mio.github.hiwepy:arcface-spring-boot-starter[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding io.github.hiwepy:arcface-spring-boot-starter 4.0.x.20251227-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;33mWARNING[m] The POM for com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 is missing, no dependency information available
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.189 s
+[[1;34mINFO[m] Finished at: 2026-03-16T13:39:09+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal on project [36marcface-spring-boot-starter[m: [1;31mCould not resolve dependencies for project io.github.hiwepy:arcface-spring-boot-starter:jar:4.0.x.20251227-SNAPSHOT: Failure to find com.arcsoft.face:arcsoft-sdk-face:jar:3.0.0.0 in https://aiban-maven.pkg.coding.net/repository/tianyin/core/ was cached in the local repository, resolution will not be reattempted until the update interval of aiban-tianyin-core has elapsed or updates are forced[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[arcface-spring-boot-starter/4.0.x] 失败 - 查看日志
+[arcface-spring-boot-starter/master] 失败 - 分支切换失败

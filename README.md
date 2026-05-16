@@ -17,7 +17,7 @@ mvn deploy:deploy-file -DgroupId=com.arcsoft.face -DartifactId=arcsoft-sdk-face 
 
 ``` xml
 <dependency>
-	<groupId>com.github.hiwepy</groupId>
+	<groupId>io.github.hiwepy</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
