@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.github.hiwepy</groupId>
+	<groupId>io.github.hiwepy</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
 	<description>Spring Boot Starter For Arcsoft API</description>
 	<version>3.3.x.20240823.RELEASE</version>
