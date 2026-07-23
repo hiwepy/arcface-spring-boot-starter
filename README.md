@@ -17,7 +17,7 @@ mvn deploy:deploy-file -DgroupId=com.baidu.aip -DartifactId=java-sdk -Dversion=4
 
 ``` xml
 <dependency>
-	<groupId>com.github.hiwepy</groupId>
+	<groupId>io.github.easy4j</groupId>
 	<artifactId>arcface-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
