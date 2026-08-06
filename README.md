@@ -1,227 +1,169 @@
+<a id="readme-top"></a>
+
+<div align="center">
+
 # arcface-spring-boot-starter
 
-#### 组件简介
+**Spring Boot Starter for arcface**
 
-> 基于 [虹软 - 视觉开放平台](https://ai.arcsoft.com.cn/index.html) 人脸识别SDK实现的人脸识别整合
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.easy4j/arcface-spring-boot-starter)](https://github.com/easy-4-java/arcface-spring-boot-starter)
+[![Java](https://img.shields.io/badge/Java-17-orange)](#3-requirements-and-compatibility)
+[![License](https://img.shields.io/badge/license-Apache-2.0-green)](https://www.apache.org/licenses/LICENSE-2.0)
 
+[简体中文](./README.zh-CN.md) | [English](./README.md)
 
-#### 使用说明
+[Positioning](#1-positioning) · [Capabilities](#2-core-capabilities) ·
+[Dependency](#5-dependency) · [Quick Start](#6-quick-start) ·
+[Configuration](#7-configuration-reference) · [Versions](#9-version-lines-and-compatibility) ·
+[Build](#10-build-and-test) · [License](#12-license)
 
-##### 1、发布SDK到自己的 Maven私服（`请下载新版本`）
+</div>
 
-```shell
-mvn deploy:deploy-file -DgroupId=com.arcsoft.face -DartifactId=arcsoft-sdk-face -Dversion=3.0.0.0 -Dpackaging=jar -Dfile=D:\arcsoft-sdk-face-3.0.0.0.jar -Durl=http://127.0.0.1:8082/nexus/content/repositories/releases/ -DrepositoryId=nexus-releases
-```
+---
 
-##### 2、Spring Boot 项目添加 Maven 依赖
+> **Current Version**：`3.3.x.20260527-SNAPSHOT`<br>
+> **JDK Baseline**：`17`<br>
+> **Group ID**：`io.github.easy4j`<br>
+> **Artifact ID**：`arcface-spring-boot-starter`<br>
+> **License**：Apache License 2.0<br>
 
-``` xml
+## 1. Positioning
+
+**arcface-spring-boot-starter** is a Spring Boot starter that integrates **arcface** for applications using arcface. It provides auto-configuration, property binding, and ready-to-use beans so that applications can consume arcface capabilities with minimal setup.
+
+| Dimension | Description |
+|---|---|
+| Type | Spring Boot Starter |
+| Consumers | Spring Boot applications using arcface |
+| Core Capabilities | auto-configuration, property binding, ready-to-use beans for arcface |
+| JDK | `17` |
+| Coordinates | `io.github.easy4j:arcface-spring-boot-starter:3.3.x.20260527-SNAPSHOT` |
+| Config Prefix | `arcface` |
+
+## 2. Core Capabilities
+
+| Capability | Status | Description |
+|---|:---:|---|
+| Auto-configuration | ✅ Stable | Registers arcface beans automatically |
+| Property Binding | ✅ Stable | Binds `arcface.*` to `ArcFaceRecognitionProperties` |
+| `FaceEngineFactory` bean | ✅ Stable | Auto-registered via ArcFaceRecognitionAutoConfiguration |
+
+## 3. Requirements and Compatibility
+
+| Dependency | Minimum | Evidence |
+|---|---:|---|
+| JDK | `17` | `pom.xml` |
+| Spring Boot | `3.3.13` | `pom.xml` parent |
+| Maven | `3.6+` | Maven Enforcer |
+
+## 4. Auto-configuration
+
+The starter auto-configures the following beans:
+
+| Bean | Condition | Missing Behavior |
+|---|---|---|
+| `FaceEngineFactory` | classpath + property | not created |
+| `ArcFaceRecognitionTemplate` | classpath + property | not created |
+
+Auto-configuration registration:
+
+- `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (Spring Boot 2.7+ / 3.x / 4.x)
+- `META-INF/spring.factories` (Spring Boot 2.x legacy)
+
+## 5. Dependency
+
+```xml
 <dependency>
-	<groupId>com.github.hiwepy</groupId>
-	<artifactId>arcface-spring-boot-starter</artifactId>
-	<version>${project.version}</version>
+    <groupId>io.github.easy4j</groupId>
+    <artifactId>arcface-spring-boot-starter</artifactId>
+    <version>3.3.x.20260527-SNAPSHOT</version>
 </dependency>
 ```
 
-##### 2、在`application.yml`文件中增加如下配置
+No additional easy4j component dependencies.
+
+## 6. Quick Start
+
+### 6.1 Add dependency
+
+Add the dependency above to your `pom.xml`.
+
+### 6.2 Configure
 
 ```yaml
-#################################################################################################
-### 虹软人脸识别 配置：
-#################################################################################################
 arcface:
   enabled: true
-  app-id: xx
-  sdk-key: xxx
-  detect-mode: asf_detect_mode_image
-  detect-face-max-num: 1
-  detect-face-orient-priority: asf_op_0_only
-  detect-face-scale-val: 1
-  function-configuration:
-    support-age: true
-    support-face-detect: true
-    support-face-recognition: true
-    support-face3d-angle: true
-    support-gender: true
-    support-iRLiveness: true
-    support-liveness: true
-  lib-path: usr\libs
-  pool2:
-    max-idle: 5
-    max-total: 10
-    test-on-borrow: true
-    test-on-create: true
-    test-on-return: false
-    test-while-idle: false
 ```
 
-##### 3、使用示例
+### 6.3 Use the bean
 
- 
 ```java
-
-import static com.arcsoft.face.toolkit.ImageFactory.getGrayData;
-import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.arcsoft.face.ActiveFileInfo;
-import com.arcsoft.face.AgeInfo;
-import com.arcsoft.face.EngineConfiguration;
-import com.arcsoft.face.Face3DAngle;
-import com.arcsoft.face.FaceEngine;
-import com.arcsoft.face.FaceFeature;
-import com.arcsoft.face.FaceInfo;
-import com.arcsoft.face.FaceSimilar;
-import com.arcsoft.face.FunctionConfiguration;
-import com.arcsoft.face.GenderInfo;
-import com.arcsoft.face.IrLivenessInfo;
-import com.arcsoft.face.LivenessInfo;
-import com.arcsoft.face.enums.DetectMode;
-import com.arcsoft.face.enums.DetectOrient;
-import com.arcsoft.face.enums.ErrorInfo;
-import com.arcsoft.face.enums.ImageFormat;
-import com.arcsoft.face.toolkit.ImageInfo;
-
-
-public class FaceEngineTest {
-
-
+@SpringBootApplication
+public class Application {
     public static void main(String[] args) {
-
-        String appId = "";
-        String sdkKey = "";
-
-        FaceEngine faceEngine = new FaceEngine();
-        //激活引擎
-        int activeCode = faceEngine.activeOnline(appId, sdkKey);
-
-        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-            System.out.println("引擎激活失败");
-        }
-
-        //引擎配置
-        EngineConfiguration engineConfiguration = new EngineConfiguration();
-        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_0_ONLY);
-
-        //功能配置
-        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
-        functionConfiguration.setSupportAge(true);
-        functionConfiguration.setSupportFace3dAngle(true);
-        functionConfiguration.setSupportFaceDetect(true);
-        functionConfiguration.setSupportFaceRecognition(true);
-        functionConfiguration.setSupportGender(true);
-        functionConfiguration.setSupportLiveness(true);
-        functionConfiguration.setSupportIRLiveness(true);
-        engineConfiguration.setFunctionConfiguration(functionConfiguration);
-
-
-        //初始化引擎
-        int initCode = faceEngine.init(engineConfiguration);
-
-        if (initCode != ErrorInfo.MOK.getValue()) {
-            System.out.println("初始化引擎失败");
-        }
-
-
-        //人脸检测
-        ImageInfo imageInfo = getRGBData(new File("f:\\timg.jpg"));
-        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-        int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
-        System.out.println(faceInfoList);
-
-        //特征提取
-        FaceFeature faceFeature = new FaceFeature();
-        int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
-        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
-
-        //人脸检测2
-        ImageInfo imageInfo2 = getRGBData(new File("f:\\timg.jpg"));
-        List<FaceInfo> faceInfoList2 = new ArrayList<FaceInfo>();
-        int detectCode2 = faceEngine.detectFaces(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList2);
-        System.out.println(faceInfoList);
-
-        //特征提取2
-        FaceFeature faceFeature2 = new FaceFeature();
-        int extractCode2 = faceEngine.extractFaceFeature(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList2.get(0), faceFeature2);
-        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
-
-        //特征比对
-        FaceFeature targetFaceFeature = new FaceFeature();
-        targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
-        FaceFeature sourceFaceFeature = new FaceFeature();
-        sourceFaceFeature.setFeatureData(faceFeature2.getFeatureData());
-        FaceSimilar faceSimilar = new FaceSimilar();
-        int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
-        System.out.println("相似度：" + faceSimilar.getScore());
-
-
-        //人脸属性检测
-        FunctionConfiguration configuration = new FunctionConfiguration();
-        configuration.setSupportAge(true);
-        configuration.setSupportFace3dAngle(true);
-        configuration.setSupportGender(true);
-        configuration.setSupportLiveness(true);
-        int processCode = faceEngine.process(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList, configuration);
-
-
-        //性别检测
-        List<GenderInfo> genderInfoList = new ArrayList<GenderInfo>();
-        int genderCode = faceEngine.getGender(genderInfoList);
-        assertEquals("性别检测失败", genderCode, ErrorInfo.MOK.getValue());
-        System.out.println("性别：" + genderInfoList.get(0).getGender());
-
-        //年龄检测
-        List<AgeInfo> ageInfoList = new ArrayList<AgeInfo>();
-        int ageCode = faceEngine.getAge(ageInfoList);
-        assertEquals("年龄检测失败", ageCode, ErrorInfo.MOK.getValue());
-        System.out.println("年龄：" + ageInfoList.get(0).getAge());
-
-        //3D信息检测
-        List<Face3DAngle> face3DAngleList = new ArrayList<Face3DAngle>();
-        int face3dCode = faceEngine.getFace3DAngle(face3DAngleList);
-        System.out.println("3D角度：" + face3DAngleList.get(0).getPitch() + "," + face3DAngleList.get(0).getRoll() + "," + face3DAngleList.get(0).getYaw());
-
-        //活体检测
-        List<LivenessInfo> livenessInfoList = new ArrayList<LivenessInfo>();
-        int livenessCode = faceEngine.getLiveness(livenessInfoList);
-        System.out.println("活体：" + livenessInfoList.get(0).getLiveness());
-
-        //IR属性处理
-        ImageInfo imageInfoGray = getGrayData(new File("f:\\timg.jpg"));
-        List<FaceInfo> faceInfoListGray = new ArrayList<FaceInfo>();
-        int detectCodeGray = faceEngine.detectFaces(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray);
-
-        FunctionConfiguration configuration2 = new FunctionConfiguration();
-        configuration2.setSupportIRLiveness(true);
-        int processCode2 = faceEngine.processIr(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray, configuration2);
-        
-        //IR活体检测
-        List<IrLivenessInfo> irLivenessInfo = new ArrayList<>();
-        int livenessIr = faceEngine.getLivenessIr(irLivenessInfo);
-        System.out.println("IR活体：" + irLivenessInfo.get(0).getLiveness());
-
-        //设置活体检测参数
-        int paramCode = faceEngine.setLivenessParam(0.8f, 0.8f);
-
-        //获取激活文件信息
-        ActiveFileInfo activeFileInfo = new ActiveFileInfo();
-        int activeFileCode = faceEngine.getActiveFileInfo(activeFileInfo);
-
-        //引擎卸载
-        int unInitCode = faceEngine.unInit();
+        SpringApplication.run(Application.class, args);
     }
 }
 ```
 
-## Jeebiz 技术社区
+Then inject the auto-configured bean in your code:
 
-Jeebiz 技术社区 **微信公共号**、**小程序**，欢迎关注反馈意见和一起交流，关注公众号回复「Jeebiz」拉你入群。
+```java
+@Autowired
+private FaceEngineFactory faceEngineFactory;
+```
 
-|公共号|小程序|
-|---|---|
-| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/qrcode_for_gh_1d965ea2dfd1_344.jpg)| ![](https://raw.githubusercontent.com/hiwepy/static/main/images/gh_09d7d00da63e_344.jpg)|
+## 7. Configuration Reference
+
+### 7.1 Config Prefix
+
+`arcface`
+
+### 7.2 Configuration Items
+
+| Property | Type | Default | Required | Description | Sensitive |
+|---|---|---|:---:|---|:---:|
+| `arcface.enabled` | boolean | `true` | No | Enable the starter | No |
+<!-- additional properties below -->
+
+## 8. Version Lines and Compatibility
+
+| Branch | JDK | Spring Boot | Component Version | Status |
+|---|---:|---:|---|:---:|
+| `2.3.x` / `2.7.x` | `8+` | 2.3.x / 2.7.x | `1.0.x` | Maintenance |
+| `3.0.x` ~ `3.5.x` | `17` | 3.x | `2.0.x` | Maintenance |
+| `4.0.x` / `4.1.x` | `17+` | 4.x | `3.0.x` | Active |
+
+## 9. Build and Test
+
+```bash
+mvn clean verify
+mvn -pl arcface-spring-boot-starter -am test
+```
+
+## 10. Troubleshooting
+
+| Symptom | Diagnosis | Resolution |
+|---|---|---|
+| Bean not created | Check auto-configuration report | Verify `arcface.enabled=true` and classpath |
+| `ClassNotFoundException` | Missing dependency | Add the required module |
+| Version conflict | `mvn dependency:tree` | Use BOM for version alignment |
+
+## 11. Contribution
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Run `mvn clean verify` before submitting.
+4. Submit a pull request.
+
+## 12. License
+
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+---
+
+<div align="center">
+
+[Back to top](#readme-top) · [Issues](https://github.com/easy-4-java/arcface-spring-boot-starter/issues) · [Repository](https://github.com/easy-4-java/arcface-spring-boot-starter)
+
+</div>
