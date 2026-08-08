@@ -29,7 +29,7 @@ import com.google.common.collect.Maps;
 
 /**
  * TODO
- * @author 		： <a href="https://github.com/hiwepy">wandl</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
 
