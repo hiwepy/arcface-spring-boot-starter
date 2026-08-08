@@ -20,7 +20,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 /**
  * TODO
- * @author 		： <a href="https://github.com/hiwepy">wandl</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public class ArcFaceMessageSource extends ResourceBundleMessageSource {
 	
