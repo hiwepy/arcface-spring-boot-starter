@@ -44,6 +44,7 @@ import com.google.common.collect.Lists;
  * 基于虹软Arcface实现的人脸识别通用模板对象
  * @author [@Loong Wan](https://github.com/loong10k)
  */
+/**\n * Template for ArcFace face recognition operations.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
 public class ArcFaceRecognitionTemplate {
 
 	protected MessageSourceAccessor messages = ArcFaceMessageSource.getAccessor();
