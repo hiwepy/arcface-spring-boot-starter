@@ -17,7 +17,7 @@ package com.arcsoft.face.spring.boot;
 
 /**
  * 活体控制
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public enum FaceLiveness {
 
