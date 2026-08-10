@@ -42,9 +42,9 @@ import com.google.common.collect.Lists;
 
 /*
  * 基于虹软Arcface实现的人脸识别通用模板对象
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
-/**\n * Template for ArcFace face recognition operations.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
+/**\n * Template for ArcFace face recognition operations.\n *\n * @author <a href="https://github.com/loong10k">Loong Wan</a>\n * @since 1.0.0\n */
 public class ArcFaceRecognitionTemplate {
 
 	protected MessageSourceAccessor messages = ArcFaceMessageSource.getAccessor();
@@ -88,7 +88,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject detect(byte[] imageBytes) {
@@ -99,7 +99,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject detect(byte[] imageBytes, FaceLiveness liveness) {
@@ -110,7 +110,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject detect(ImageInfo imageInfo) {
@@ -121,7 +121,7 @@ public class ArcFaceRecognitionTemplate {
 	 * RGB活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject detect(ImageInfo imageInfo, FaceLiveness liveness) {
@@ -264,7 +264,7 @@ public class ArcFaceRecognitionTemplate {
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageBytes 输入的图像数据
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject irDetect(byte[] imageBytes, FaceLiveness liveness) {
@@ -275,7 +275,7 @@ public class ArcFaceRecognitionTemplate {
 	 * IR活体、年龄、性别、三维角度检测
 	 * 
 	 * @param imageInfo 输入的图像信息
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
 	public JSONObject irDetect(ImageInfo imageInfo, FaceLiveness liveness) {
@@ -801,7 +801,7 @@ public class ArcFaceRecognitionTemplate {
 	/*
 	 * IR活体检测
 	 * 
-	 * @author [@Loong Wan](https://github.com/loong10k)
+	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @param imageInfo 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断
 	 * @param option    场景信息，程序会视不同的场景选用相对应的模型。当前支持的场景有COMMON(通用场景)，GATE(闸机场景)，默认使用COMMON
 	 * @return

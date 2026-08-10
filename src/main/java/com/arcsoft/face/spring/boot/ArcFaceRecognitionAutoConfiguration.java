@@ -12,7 +12,7 @@ import com.arcsoft.face.spring.boot.pool2.FaceEngineFactory;
 @Configuration
 @ConditionalOnProperty(prefix = ArcFaceRecognitionProperties.PREFIX, value = "enabled", havingValue = "true")
 @EnableConfigurationProperties({ ArcFaceRecognitionProperties.class })
-/**\n * Auto-configuration for ArcFace face recognition SDK.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
+/**\n * Auto-configuration for ArcFace face recognition SDK.\n *\n * @author <a href="https://github.com/loong10k">Loong Wan</a>\n * @since 1.0.0\n */
 public class ArcFaceRecognitionAutoConfiguration {
 
 	@Bean
