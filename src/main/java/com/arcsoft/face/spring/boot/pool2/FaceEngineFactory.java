@@ -30,6 +30,7 @@ import com.google.common.collect.Maps;
 /**
  * TODO
  * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
  */
 public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
 
@@ -40,6 +41,11 @@ public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
         this.properties = properties;
     }
     
+	/**
+	 * <p>create.</p>
+	 * @return the create return value
+	 * @throws Exception if a exception occurs
+	 */
 	@Override
 	public FaceEngine create() throws Exception {
 		
@@ -62,11 +68,21 @@ public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
         return faceEngine;
 	}
 	
+    /**
+     * <p>wrap.</p>
+     * @param faceEngine the face engine
+     * @return the wrap return value
+     */
 	@Override
     public PooledObject<FaceEngine> wrap(FaceEngine faceEngine) {
         return new DefaultPooledObject<>(faceEngine);
     }
 	
+	/**
+	 * <p>activate object.</p>
+	 * @param p the p
+	 * @throws Exception if a exception occurs
+	 */
 	@Override
 	public void activateObject(PooledObject<FaceEngine> p) throws Exception {
 		FaceEngine faceEngine = p.getObject();
@@ -92,6 +108,11 @@ public class FaceEngineFactory extends BasePooledObjectFactory<FaceEngine> {
 		super.activateObject(p);
 	}
 	
+    /**
+     * <p>destroy object.</p>
+     * @param p the p
+     * @throws Exception if a exception occurs
+     */
     @Override
     public void destroyObject(PooledObject<FaceEngine> p) throws Exception {
         FaceEngine faceEngine = p.getObject();

@@ -21,6 +21,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 /**
  * TODO
  * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
  */
 public class ArcFaceMessageSource extends ResourceBundleMessageSource {
 	
@@ -34,6 +35,7 @@ public class ArcFaceMessageSource extends ResourceBundleMessageSource {
 	// ~ Methods
 	// ========================================================================================================
 
+	/** Getter for accessor */
 	public static MessageSourceAccessor getAccessor() {
 		return new MessageSourceAccessor(new ArcFaceMessageSource());
 	}
