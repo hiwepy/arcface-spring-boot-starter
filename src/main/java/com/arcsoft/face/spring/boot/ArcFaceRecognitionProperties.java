@@ -21,6 +21,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import com.arcsoft.face.EngineConfiguration;
 import com.arcsoft.face.FaceEngine;
 
+/**
+ * <p>Configuration properties for ArcFaceRecognition.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 @ConfigurationProperties(ArcFaceRecognitionProperties.PREFIX)
 public class ArcFaceRecognitionProperties extends EngineConfiguration {
 
@@ -48,42 +54,52 @@ public class ArcFaceRecognitionProperties extends EngineConfiguration {
 	private GenericObjectPoolConfig<FaceEngine> pool2 = new GenericObjectPoolConfig<FaceEngine>();
 	
 
+	/** Getter for enabled */
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+	/** Setter for enabled */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
+	/** Getter for app id */
 	public String getAppId() {
 		return appId;
 	}
 
+	/** Setter for app id */
 	public void setAppId(String appId) {
 		this.appId = appId;
 	}
 
+	/** Getter for sdk key */
 	public String getSdkKey() {
 		return sdkKey;
 	}
 
+	/** Setter for sdk key */
 	public void setSdkKey(String sdkKey) {
 		this.sdkKey = sdkKey;
 	}
 
+	/** Getter for lib path */
 	public String getLibPath() {
 		return libPath;
 	}
 
+	/** Setter for lib path */
 	public void setLibPath(String libPath) {
 		this.libPath = libPath;
 	}
 
+	/** Getter for pool2 */
 	public GenericObjectPoolConfig<FaceEngine> getPool2() {
 		return pool2;
 	}
 
+	/** Setter for pool2 */
 	public void setPool2(GenericObjectPoolConfig<FaceEngine> pool2) {
 		this.pool2 = pool2;
 	}

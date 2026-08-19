@@ -57,6 +57,7 @@ public class ArcFaceRecognitionTemplate {
 		this.faceEngineObjectPool = faceEngineObjectPool;
 	}
 	
+	/** Getter for message */
 	protected String getMessage(int code) {
 		return messages.getMessage("K" + code);
 	}
@@ -64,6 +65,7 @@ public class ArcFaceRecognitionTemplate {
 	/*
 	 * 不同的控制度下所对应的活体控制阈值，如果检测出来的活体分数小于控制阈值，则会返回错误信息。 LOW 0.05 NORMAL 0.3 HIGH 0.9
 	 */
+	/** Setter for liveness param */
 	protected int setLivenessParam(FaceEngine faceEngine, FaceLiveness liveness, JSONObject result) {
 		switch (liveness) {
 			case LOW: {
@@ -91,6 +93,11 @@ public class ArcFaceRecognitionTemplate {
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
+	/**
+	 * <p>detect.</p>
+	 * @param imageBytes the image bytes
+	 * @return the detect return value
+	 */
 	public JSONObject detect(byte[] imageBytes) {
 		return detect(ImageFactory.getRGBData(imageBytes), FaceLiveness.NONE);
 	}
@@ -101,6 +108,12 @@ public class ArcFaceRecognitionTemplate {
 	 * @param imageBytes 输入的图像数据
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
+	 */
+	/**
+	 * <p>detect.</p>
+	 * @param imageBytes the image bytes
+	 * @param liveness the liveness
+	 * @return the detect return value
 	 */
 	public JSONObject detect(byte[] imageBytes, FaceLiveness liveness) {
 		return detect(ImageFactory.getRGBData(imageBytes), liveness);
@@ -113,6 +126,11 @@ public class ArcFaceRecognitionTemplate {
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
+	/**
+	 * <p>detect.</p>
+	 * @param imageInfo the image info
+	 * @return the detect return value
+	 */
 	public JSONObject detect(ImageInfo imageInfo) {
 		return detect(imageInfo, FaceLiveness.NONE);
 	}
@@ -123,6 +141,12 @@ public class ArcFaceRecognitionTemplate {
 	 * @param imageInfo 输入的图像信息
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
+	 */
+	/**
+	 * <p>detect.</p>
+	 * @param imageInfo the image info
+	 * @param liveness the liveness
+	 * @return the detect return value
 	 */
 	public JSONObject detect(ImageInfo imageInfo, FaceLiveness liveness) {
 
@@ -267,6 +291,12 @@ public class ArcFaceRecognitionTemplate {
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
 	 */
+	/**
+	 * <p>ir detect.</p>
+	 * @param imageBytes the image bytes
+	 * @param liveness the liveness
+	 * @return the irDetect return value
+	 */
 	public JSONObject irDetect(byte[] imageBytes, FaceLiveness liveness) {
 		return irDetect(ImageFactory.getGrayData(imageBytes), liveness);
 	}
@@ -277,6 +307,12 @@ public class ArcFaceRecognitionTemplate {
 	 * @param imageInfo 输入的图像信息
 	 * @author <a href="https://github.com/loong10k">Loong Wan</a>
 	 * @return
+	 */
+	/**
+	 * <p>ir detect.</p>
+	 * @param imageInfo the image info
+	 * @param liveness the liveness
+	 * @return the irDetect return value
 	 */
 	public JSONObject irDetect(ImageInfo imageInfo, FaceLiveness liveness) {
 
@@ -416,6 +452,13 @@ public class ArcFaceRecognitionTemplate {
 		return null;
 	}
 
+	/**
+	 * <p>match.</p>
+	 * @param sourceImage the source image
+	 * @param feature the feature
+	 * @param liveness the liveness
+	 * @return the match return value
+	 */
 	public JSONObject match(ImageInfo sourceImage, byte[] feature, FaceLiveness liveness) {
 
 		JSONObject result = new JSONObject();
@@ -499,10 +542,24 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 	
+	/**
+	 * <p>match.</p>
+	 * @param sourceImage the source image
+	 * @param targetImage the target image
+	 * @param liveness the liveness
+	 * @return the match return value
+	 */
 	public JSONObject match(byte[] sourceImage, byte[] targetImage, FaceLiveness liveness) {
 		return match(ImageFactory.getRGBData(sourceImage), ImageFactory.getRGBData(targetImage), liveness);
 	}
 	
+	/**
+	 * <p>match.</p>
+	 * @param sourceImage the source image
+	 * @param targetImage the target image
+	 * @param liveness the liveness
+	 * @return the match return value
+	 */
 	public JSONObject match(ImageInfo sourceImage, ImageInfo targetImage, FaceLiveness liveness) {
 
 		JSONObject result = new JSONObject();
@@ -608,14 +665,32 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 	
+	/**
+	 * <p>ir search.</p>
+	 * @param sourceImage the source image
+	 * @param searchImage the search image
+	 * @return the irSearch return value
+	 */
 	public JSONObject irSearch(byte[] sourceImage, byte[] searchImage) {
 		return search(ImageFactory.getGrayData(sourceImage), ImageFactory.getGrayData(searchImage));
 	}
 	
+	/**
+	 * <p>search.</p>
+	 * @param sourceImage the source image
+	 * @param searchImage the search image
+	 * @return the search return value
+	 */
 	public JSONObject search(byte[] sourceImage, byte[] searchImage) {
 		return search(ImageFactory.getRGBData(sourceImage), ImageFactory.getRGBData(searchImage));
 	}
 	
+	/**
+	 * <p>search.</p>
+	 * @param sourceImage the source image
+	 * @param searchImage the search image
+	 * @return the search return value
+	 */
 	public JSONObject search(ImageInfo sourceImage, ImageInfo searchImage) {
 
 		JSONObject result = new JSONObject();
@@ -709,10 +784,22 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 
+	/**
+	 * <p>verify.</p>
+	 * @param imageBytes the image bytes
+	 * @param liveness the liveness
+	 * @return the verify return value
+	 */
 	public JSONObject verify(byte[] imageBytes, FaceLiveness liveness) {
 		return verify(ImageFactory.getRGBData(imageBytes), liveness);
 	}
 
+	/**
+	 * <p>verify.</p>
+	 * @param imageInfo the image info
+	 * @param liveness the liveness
+	 * @return the verify return value
+	 */
 	public JSONObject verify(ImageInfo imageInfo, FaceLiveness liveness) {
 
 		JSONObject result = new JSONObject();
@@ -794,6 +881,12 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 
+	/**
+	 * <p>ir verify.</p>
+	 * @param imageBytes the image bytes
+	 * @param liveness the liveness
+	 * @return the irVerify return value
+	 */
 	public JSONObject irVerify(byte[] imageBytes, FaceLiveness liveness) {
 		return irVerify(ImageFactory.getGrayData(imageBytes), liveness);
 	}
@@ -805,6 +898,12 @@ public class ArcFaceRecognitionTemplate {
 	 * @param imageInfo 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断
 	 * @param option    场景信息，程序会视不同的场景选用相对应的模型。当前支持的场景有COMMON(通用场景)，GATE(闸机场景)，默认使用COMMON
 	 * @return
+	 */
+	/**
+	 * <p>ir verify.</p>
+	 * @param imageInfo the image info
+	 * @param liveness the liveness
+	 * @return the irVerify return value
 	 */
 	public JSONObject irVerify(ImageInfo imageInfo, FaceLiveness liveness) {
 
@@ -887,6 +986,7 @@ public class ArcFaceRecognitionTemplate {
 		}
 	}
 	
+	/** Getter for properties */
 	public ArcFaceRecognitionProperties getProperties() {
 		return properties;
 	}

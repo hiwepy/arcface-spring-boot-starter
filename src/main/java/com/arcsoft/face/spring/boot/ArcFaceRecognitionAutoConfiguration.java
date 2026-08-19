@@ -15,16 +15,33 @@ import com.arcsoft.face.spring.boot.pool2.FaceEngineFactory;
 /**\n * Auto-configuration for ArcFace face recognition SDK.\n *\n * @author <a href="https://github.com/loong10k">Loong Wan</a>\n * @since 1.0.0\n */
 public class ArcFaceRecognitionAutoConfiguration {
 
+	/**
+	 * <p>face engine factory.</p>
+	 * @param properties the properties
+	 * @return the faceEngineFactory return value
+	 */
 	@Bean
 	public FaceEngineFactory faceEngineFactory(ArcFaceRecognitionProperties properties) {
 		return new FaceEngineFactory(properties);
 	}
 
+	/**
+	 * <p>face engine object pool.</p>
+	 * @param faceEngineFactory the face engine factory
+	 * @param properties the properties
+	 * @return the faceEngineObjectPool return value
+	 */
 	@Bean
 	public GenericObjectPool<FaceEngine> faceEngineObjectPool(FaceEngineFactory faceEngineFactory, ArcFaceRecognitionProperties properties) {
 		return new GenericObjectPool<FaceEngine>(faceEngineFactory, properties.getPool2());
 	}
 
+	/**
+	 * <p>arc face recognition template.</p>
+	 * @param properties the properties
+	 * @param faceEngineObjectPool the face engine object pool
+	 * @return the arcFaceRecognitionTemplate return value
+	 */
 	@Bean
 	public ArcFaceRecognitionTemplate arcFaceRecognitionTemplate(ArcFaceRecognitionProperties properties,
 			GenericObjectPool<FaceEngine> faceEngineObjectPool) {
